@@ -1,8 +1,9 @@
 name: portfolio
 
 # ============================================================
-#  Đề 13 - Website Portfolio cá nhân (Commit 1)
-#  Stack: Nginx Reverse Proxy + WordPress + MySQL 8.0 + phpMyAdmin
+#  Đề 13 - Website Portfolio cá nhân (Commit 2: Monitoring)
+#  Stack: Nginx + WordPress + MySQL + phpMyAdmin
+#  Monitoring: Prometheus + Grafana + cAdvisor + Exporters
 # ============================================================
 
 x-db-env: &db-env
@@ -104,6 +105,94 @@ services:
       - nginx_logs:/var/log/nginx
     networks:
       - frontend
+      - monitoring
+
+  # ---------------- Nginx Prometheus Exporter ----------------
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.1.0
+    container_name: portfolio-nginx-exporter
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - nginx
+    command:
+      - -nginx.scrape-uri=http://nginx:80/stub_status
+    networks:
+      - monitoring
+
+  # ---------------- MySQL Prometheus Exporter ----------------
+  mysqld-exporter:
+    image: prom/mysqld-exporter:v0.15.1
+    container_name: portfolio-mysqld-exporter
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./config/mysql/exporter.cnf:/.my.cnf:ro
+    networks:
+      - backend
+      - monitoring
+
+  # ---------------- cAdvisor (Container Resource Metrics) ----------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: portfolio-cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring
+
+  # ---------------- Prometheus Metrics Server ----------------
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    container_name: portfolio-prometheus
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+    ports:
+      - "127.0.0.1:${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+
+  # ---------------- Grafana Dashboard ----------------
+  grafana:
+    image: grafana/grafana:10.4.0
+    container_name: portfolio-grafana
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      - prometheus
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3001}:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-admin123}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+    volumes:
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./config/grafana/dashboards:/etc/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
 
   # ---------------- WP-CLI Setup Profile ----------------
   wpcli:
@@ -132,7 +221,10 @@ volumes:
   db_data:
   wp_data:
   nginx_logs:
+  prometheus_data:
+  grafana_data:
 
 networks:
   frontend:
   backend:
+  monitoring:

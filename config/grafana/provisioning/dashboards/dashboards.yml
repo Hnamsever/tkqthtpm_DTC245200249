@@ -1,0 +1,14 @@
+apiVersion: 1
+
+providers:
+  - name: "Portfolio Dashboards"
+    orgId: 1
+    folder: "Portfolio Monitoring"
+    folderUid: "portfolio-folder"
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/dashboards
+      foldersFromFilesStructure: false

@@ -1,0 +1,5 @@
+[client]
+user=portfolio_user
+password=Db@Portfolio2026
+host=db
+port=3306
