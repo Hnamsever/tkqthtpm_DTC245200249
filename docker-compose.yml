@@ -1,9 +1,9 @@
 name: portfolio
 
 # ============================================================
-#  Đề 13 - Website Portfolio cá nhân (Commit 2: Monitoring)
+#  Đề 13 - Website Portfolio cá nhân
 #  Stack: Nginx + WordPress + MySQL + phpMyAdmin
-#  Monitoring: Prometheus + Grafana + cAdvisor + Exporters
+#  Monitoring & Logging: Prometheus + Grafana + Loki + Promtail
 # ============================================================
 
 x-db-env: &db-env
@@ -170,6 +170,40 @@ services:
     networks:
       - monitoring
 
+  # ---------------- Loki Log Aggregator ----------------
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: portfolio-loki
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command:
+      - -config.file=/etc/loki/loki-config.yml
+    ports:
+      - "127.0.0.1:${LOKI_PORT:-3100}:3100"
+    volumes:
+      - ./config/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+    networks:
+      - monitoring
+
+  # ---------------- Promtail Log Collector ----------------
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: portfolio-promtail
+    restart: unless-stopped
+    command:
+      - -config.file=/etc/promtail/promtail-config.yml
+    volumes:
+      - ./config/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - nginx_logs:/var/log/nginx:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    depends_on:
+      - loki
+    networks:
+      - monitoring
+
   # ---------------- Grafana Dashboard ----------------
   grafana:
     image: grafana/grafana:10.4.0
@@ -179,6 +213,7 @@ services:
       - no-new-privileges:true
     depends_on:
       - prometheus
+      - loki
     ports:
       - "127.0.0.1:${GRAFANA_PORT:-3001}:3000"
     environment:
@@ -223,6 +258,7 @@ volumes:
   nginx_logs:
   prometheus_data:
   grafana_data:
+  loki_data:
 
 networks:
   frontend:
