@@ -1,0 +1,34 @@
+<!-- wp:paragraph -->
+<p>Docker Compose giúp dựng toàn bộ môi trường WordPress chỉ với một lệnh. Trong bài này mình chia sẻ cách kết hợp WordPress, MySQL và phpMyAdmin.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Các thành phần</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>MySQL 8</strong> – lưu trữ dữ liệu</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>WordPress</strong> – CMS + trang admin quản lý nội dung</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>phpMyAdmin</strong> – quản trị cơ sở dữ liệu qua web</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Khởi chạy</h2>
+<!-- /wp:heading -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>docker compose up -d
+docker compose --profile setup run --rm wpcli</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Sau vài phút, website đã sẵn sàng với theme Astra được cài trực tiếp từ kho theme WordPress.org.</p>
+<!-- /wp:paragraph -->

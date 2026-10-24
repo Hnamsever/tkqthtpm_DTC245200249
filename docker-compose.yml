@@ -1,0 +1,138 @@
+name: portfolio
+
+# ============================================================
+#  Đề 13 - Website Portfolio cá nhân (Commit 1)
+#  Stack: Nginx Reverse Proxy + WordPress + MySQL 8.0 + phpMyAdmin
+# ============================================================
+
+x-db-env: &db-env
+  WORDPRESS_DB_HOST: db
+  WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+  WORDPRESS_DB_USER: ${MYSQL_USER}
+  WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+  WORDPRESS_TABLE_PREFIX: ${WP_TABLE_PREFIX:-wp_}
+
+services:
+  # ---------------- Database (MySQL 8) ----------------
+  db:
+    image: mysql:8.0
+    container_name: portfolio-db
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    networks:
+      - backend
+
+  # ---------------- WordPress Application ----------------
+  wordpress:
+    image: wordpress:php8.3-apache
+    container_name: portfolio-wordpress
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      <<: *db-env
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_MEMORY_LIMIT', '256M');
+        define('DISALLOW_FILE_EDIT', true);
+        if (isset($$_SERVER['HTTP_X_FORWARDED_PROTO']) && $$_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            $$_SERVER['HTTPS'] = 'on';
+        }
+        if (isset($$_SERVER['HTTP_X_FORWARDED_HOST'])) {
+            $$_SERVER['HTTP_HOST'] = $$_SERVER['HTTP_X_FORWARDED_HOST'];
+        }
+    volumes:
+      - wp_data:/var/www/html
+      - ./config/php/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini:ro
+    ports:
+      - "127.0.0.1:${WP_PORT:-8090}:80"
+    networks:
+      - frontend
+      - backend
+
+  # ---------------- phpMyAdmin ----------------
+  phpmyadmin:
+    image: phpmyadmin:5
+    container_name: portfolio-phpmyadmin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PMA_HOST: db
+      UPLOAD_LIMIT: 64M
+      PMA_ABSOLUTE_URI: http://localhost:${NGINX_PORT:-8000}/pma/
+    ports:
+      - "127.0.0.1:${PMA_PORT:-8091}:80"
+    networks:
+      - frontend
+      - backend
+
+  # ---------------- Nginx Reverse Proxy (Hardened) ----------------
+  nginx:
+    image: nginx:alpine
+    container_name: portfolio-nginx
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    command: ["/bin/sh", "-c", "rm -f /var/log/nginx/access.log /var/log/nginx/error.log && exec nginx -g 'daemon off;'"]
+    depends_on:
+      - wordpress
+      - phpmyadmin
+    ports:
+      - "${NGINX_PORT:-8000}:80"
+    volumes:
+      - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - frontend
+
+  # ---------------- WP-CLI Setup Profile ----------------
+  wpcli:
+    image: wordpress:cli-php8.3
+    container_name: portfolio-wpcli
+    profiles: ["setup"]
+    user: "33:33"
+    depends_on:
+      - wordpress
+    environment:
+      <<: *db-env
+      HOME: /tmp
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+    volumes:
+      - wp_data:/var/www/html
+      - ./setup:/setup:ro
+    entrypoint: ["sh", "/setup/setup.sh"]
+    networks:
+      - backend
+
+volumes:
+  db_data:
+  wp_data:
+  nginx_logs:
+
+networks:
+  frontend:
+  backend:

@@ -1,0 +1,29 @@
+<!-- wp:paragraph -->
+<p>Một website chạy production cần được giám sát liên tục. Bộ ba Prometheus – Grafana – Loki là lựa chọn mã nguồn mở phổ biến nhất hiện nay.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Vai trò từng công cụ</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Prometheus</strong>: thu thập metrics (CPU, RAM, request/giây...)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Loki</strong>: lưu trữ log, truy vấn bằng LogQL</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Grafana</strong>: trực quan hoá metrics và log trên cùng một dashboard</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Ví dụ truy vấn LogQL</h2>
+<!-- /wp:heading -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>sum by (status) (count_over_time({job="nginx"} | json | status >= 500 [5m]))</code></pre>
+<!-- /wp:code -->

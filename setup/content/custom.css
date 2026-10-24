@@ -1,0 +1,574 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap');
+
+/* ============================================================
+   PORTFOLIO MODERN LUXURY THEME (ASTRA OPTIMIZED)
+   - Tối ưu hóa toàn diện: Giao diện Glassmorphism cao cấp
+   - Màu sắc hài hòa, rực rỡ, độ tương phản cao, chuẩn UI hiện đại
+   - Xoá bỏ hoàn toàn icon thừa/lỗi ở logo theo yêu cầu
+   ============================================================ */
+
+:root {
+  --pf-primary: #6366f1;
+  --pf-primary-dark: #4f46e5;
+  --pf-accent: #06b6d4;
+  --pf-purple: #a855f7;
+  --pf-pink: #ec4899;
+  --pf-dark: #0b0f19;
+  --pf-dark-card: #0f172a;
+  --pf-text-main: #0f172a;
+  --pf-text-muted: #64748b;
+  --pf-border: rgba(226, 232, 240, 0.8);
+  --pf-radius: 20px;
+  --pf-radius-sm: 12px;
+  --pf-glow: 0 20px 40px -15px rgba(99, 102, 241, 0.25);
+}
+
+/* ----- Global Typography & Smooth Scroll ----- */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body, button, input, textarea,
+h1, h2, h3, h4, h5, h6,
+.main-header-menu .menu-link {
+  font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: #334155;
+  background-color: #f8fafc;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #6366f1, #a855f7);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4f46e5, #9333ea);
+}
+
+/* ============================================================
+   1. XOÁ PHẦN THỪA (CLEANUP UNWANTED ELEMENTS)
+   ============================================================ */
+.ast-page-builder-template .entry-header,
+.page .entry-header,
+.single .ast-single-post-order,
+.ast-breadcrumbs-content,
+.ast-search-menu-icon,
+.site-header .search-field,
+.widget_search,
+.widget_meta,
+.widget_archive,
+.widget_categories,
+.widget_recent_entries,
+.widget_recent_comments,
+#comments,
+.comments-area,
+.post-navigation,
+.ast-footer-copyright-highlight {
+  display: none !important;
+}
+
+.ast-container,
+.site-content {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.entry-content > .alignfull {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ============================================================
+   2. HEADER & NAVIGATION (LUXURY DARK GLASSMORPHISM)
+   ============================================================ */
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+}
+
+.site-header .main-header-bar {
+  background: rgba(11, 15, 25, 0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3) !important;
+  padding: 10px 0 !important;
+  min-height: auto !important;
+  height: auto !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Site Title Logo - Loại bỏ hoàn toàn pseudo icon ::before */
+.site-title a {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+}
+
+.site-title a::before {
+  display: none !important;
+  content: "" !important;
+}
+
+.site-title a:hover {
+  color: #818cf8 !important;
+  transform: translateY(-1px);
+}
+
+/* Menu Navigation - Fix hoàn toàn lỗi hình tròn to tướng của Astra */
+.main-header-bar .main-header-menu {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.main-header-bar .main-header-menu .menu-item {
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 4px !important;
+  padding: 0 !important;
+}
+
+.main-header-bar .main-header-menu .menu-link {
+  font-size: 0.92rem !important;
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 38px !important;
+  max-height: 38px !important;
+  line-height: 38px !important;
+  padding: 0 16px !important;
+  border-radius: 999px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.main-header-bar .main-header-menu .menu-item:hover > .menu-link {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.main-header-bar .main-header-menu .current-menu-item > .menu-link {
+  color: #ffffff !important;
+  background: rgba(99, 102, 241, 0.28) !important;
+  border: 1px solid rgba(99, 102, 241, 0.45) !important;
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.25) !important;
+  font-weight: 700 !important;
+}
+
+/* ============================================================
+   3. HERO SECTION (FUTURISTIC DEEP GLOW)
+   ============================================================ */
+.pf-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #0b0f19 !important;
+  background-image: 
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99, 102, 241, 0.28) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 95% 85%, rgba(168, 85, 247, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 5% 90%, rgba(6, 182, 212, 0.18) 0%, transparent 60%) !important;
+  padding: 110px 24px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.pf-hero::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.35), transparent 70%);
+  top: -150px;
+  right: -100px;
+  filter: blur(60px);
+  animation: pf-pulse 8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.pf-hero::after {
+  content: "";
+  position: absolute;
+  width: 450px;
+  height: 450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.25), transparent 70%);
+  bottom: -150px;
+  left: -80px;
+  filter: blur(60px);
+  animation: pf-pulse 10s ease-in-out infinite alternate-reverse;
+  pointer-events: none;
+}
+
+.pf-hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Status Badge with Pulsing Green Dot */
+.pf-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 16px !important;
+  border-radius: 999px !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  color: #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  backdrop-filter: blur(8px) !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.15) !important;
+}
+
+.pf-badge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: pf-blink 1.8s infinite;
+}
+
+/* Headline */
+.pf-hero-title {
+  font-size: clamp(2.5rem, 5.5vw, 4.2rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.03em !important;
+  color: #ffffff !important;
+  margin-bottom: 20px !important;
+}
+
+/* Rực rỡ và nổi bật hơn rất nhiều trên nền tối */
+.pf-gradient-text {
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #f472b6 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  text-fill-color: transparent !important;
+  display: inline-block !important;
+  filter: drop-shadow(0 2px 12px rgba(129, 140, 248, 0.35)) !important;
+}
+
+.pf-lead {
+  font-size: 1.18rem !important;
+  line-height: 1.7 !important;
+  color: #cbd5e1 !important;
+  max-width: 580px !important;
+  margin-bottom: 34px !important;
+}
+
+/* Avatar with Refined Soft Glow */
+.pf-avatar {
+  text-align: center !important;
+}
+
+.pf-avatar img {
+  width: 100% !important;
+  max-width: 330px !important;
+  aspect-ratio: 1 !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+  border: 3px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 
+    0 0 0 10px rgba(99, 102, 241, 0.18),
+    0 0 0 20px rgba(99, 102, 241, 0.08),
+    0 25px 60px rgba(0, 0, 0, 0.6) !important;
+  animation: pf-float 6s ease-in-out infinite !important;
+}
+
+/* Buttons */
+.wp-block-button .wp-block-button__link {
+  font-family: inherit !important;
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  padding: 13px 28px !important;
+  border-radius: 999px !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.pf-btn-primary .wp-block-button__link {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+}
+
+.pf-btn-primary .wp-block-button__link:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 15px 35px -5px rgba(79, 70, 229, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  filter: brightness(1.1) !important;
+}
+
+.pf-btn-ghost .wp-block-button__link {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #f1f5f9 !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.pf-btn-ghost .wp-block-button__link:hover {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ============================================================
+   PAGE HEADERS (GIỚI THIỆU, DỰ ÁN, LIÊN HỆ, BLOG)
+   ============================================================ */
+.pf-page-header,
+.wp-block-group.pf-page-header {
+  position: relative !important;
+  overflow: hidden !important;
+  background: linear-gradient(135deg, #0b0f19 0%, #1e1b4b 60%, #312e81 100%) !important;
+  padding: 85px 24px !important;
+  text-align: center !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.pf-page-header h1,
+.pf-page-header h1.wp-block-heading,
+.pf-page-header .wp-block-heading,
+.pf-page-header h2,
+.entry-content .pf-page-header h1,
+.entry-content .pf-page-header .wp-block-heading,
+.has-background.has-text-color h1,
+.has-background.has-text-color h2 {
+  color: #ffffff !important;
+  font-size: clamp(2.2rem, 5vw, 3.4rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 14px !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.pf-page-header .pf-lead,
+.pf-page-header p,
+.entry-content .pf-page-header p,
+.has-background.has-text-color p {
+  color: #cbd5e1 !important;
+  font-size: 1.15rem !important;
+  opacity: 0.95 !important;
+  max-width: 650px !important;
+  margin: 0 auto !important;
+}
+
+/* ============================================================
+   4. CONTENT SECTIONS & CARDS
+   ============================================================ */
+.pf-section {
+  padding: 90px 24px !important;
+}
+
+.pf-section-alt {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 50%, #f8fafc 100%) !important;
+}
+
+.pf-eyebrow {
+  text-transform: uppercase !important;
+  letter-spacing: 0.2em !important;
+  font-size: 0.82rem !important;
+  font-weight: 800 !important;
+  color: var(--pf-primary) !important;
+  margin-bottom: 12px !important;
+}
+
+.pf-section h2 {
+  font-size: clamp(2rem, 3.8vw, 2.8rem) !important;
+  font-weight: 800 !important;
+  color: #0f172a !important;
+  letter-spacing: -0.03em !important;
+  margin-bottom: 45px !important;
+}
+
+/* Card Styling */
+.pf-grid {
+  gap: 28px !important;
+}
+
+.pf-card {
+  background: #ffffff !important;
+  border-radius: var(--pf-radius) !important;
+  padding: 34px !important;
+  border: 1px solid var(--pf-border) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04) !important;
+  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: relative !important;
+}
+
+.pf-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: var(--pf-glow), 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+
+.pf-icon {
+  font-size: 2rem !important;
+  width: 64px !important;
+  height: 64px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.12)) !important;
+  margin-bottom: 18px !important;
+}
+
+.pf-card h3 {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+  margin-bottom: 10px !important;
+}
+
+.pf-card p {
+  color: var(--pf-text-muted) !important;
+  line-height: 1.6 !important;
+  font-size: 0.98rem !important;
+}
+
+/* Project Cards */
+.pf-project {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.pf-project figure {
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+.pf-project img {
+  width: 100% !important;
+  aspect-ratio: 16 / 10 !important;
+  object-fit: cover !important;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.pf-project:hover img {
+  transform: scale(1.06) !important;
+}
+
+.pf-project > *:not(figure) {
+  padding: 0 30px !important;
+}
+
+.pf-project > *:last-child {
+  padding-bottom: 30px !important;
+}
+
+.pf-tags {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin-top: 20px !important;
+}
+
+.pf-tags span {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
+  background: #eef2ff !important;
+  color: #4f46e5 !important;
+  border: 1px solid rgba(99, 102, 241, 0.15) !important;
+}
+
+/* ============================================================
+   5. CTA & FOOTER
+   ============================================================ */
+.pf-cta {
+  background: linear-gradient(135deg, #4338ca 0%, #6366f1 50%, #0284c7 100%) !important;
+  border-radius: 0 !important;
+}
+
+.pf-btn-light .wp-block-button__link {
+  background: #ffffff !important;
+  color: #4338ca !important;
+  font-weight: 700 !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+  border: none !important;
+}
+
+.pf-btn-light .wp-block-button__link:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25) !important;
+}
+
+.site-footer,
+.site-below-footer-wrap {
+  background: #0b0f19 !important;
+  color: #94a3b8 !important;
+  padding: 40px 24px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  text-align: center !important;
+}
+
+.ast-footer-copyright {
+  color: #94a3b8 !important;
+  font-size: 0.95rem !important;
+}
+
+.site-footer a {
+  color: #cbd5e1 !important;
+  text-decoration: none !important;
+  font-weight: 600 !important;
+}
+
+.site-footer a:hover {
+  color: #38bdf8 !important;
+}
+
+/* ============================================================
+   6. KEYFRAME ANIMATIONS
+   ============================================================ */
+@keyframes pf-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pf-pulse {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.7; }
+  100% { transform: scale(1.15) translate(20px, 20px); opacity: 1; }
+}
+
+@keyframes pf-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* Responsive */
+@media (max-width: 781px) {
+  .pf-hero { padding: 75px 20px !important; text-align: center !important; }
+  .pf-hero .wp-block-buttons { justify-content: center !important; }
+  .pf-lead { margin-left: auto !important; margin-right: auto !important; }
+  .pf-section { padding: 60px 20px !important; }
+}

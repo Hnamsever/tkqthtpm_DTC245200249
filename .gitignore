@@ -1,0 +1,25 @@
+# Environment & runtime logs
+.env
+*.log
+data/
+backups/
+__pycache__/
+.DS_Store
+
+# Report files & scripts (Nộp riêng qua LMS, không đưa lên GitHub)
+*.docx
+~$*.docx
+*.pdf
+BAO_CAO_*
+TAI_LIEU_*
+extracted_pdf.txt
+build_full_report.py
+tao_bao_cao.py
+tao_tai_lieu_on_thi.py
+tao_so_do_kien_truc.py
+tao_dashboard_cards.py
+capture_all_screenshots.py
+make_commits.py
+rebuild_git_history.py
+push_to_github.bat
+screenshots/
